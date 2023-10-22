@@ -1,0 +1,720 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="http://www.example.com/SwerveDrive/swerveMath/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../drivetrainSubsystem/">
+      
+      
+      <link rel="icon" href="../../logo.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
+    
+    
+      
+        <title>Swerve Math - Ragnorok Robotics 3748 Swerve</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35e1ed30.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="yellow" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#swerve-math" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Ragnorok Robotics 3748 Swerve" class="md-header__button md-logo" aria-label="Ragnorok Robotics 3748 Swerve" data-md-component="logo">
+      
+  <img src="../../logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ragnorok Robotics 3748 Swerve
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Swerve Math
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Ragnorok Robotics 3748 Swerve" class="md-nav__button md-logo" aria-label="Ragnorok Robotics 3748 Swerve" data-md-component="logo">
+      
+  <img src="../../logo.png" alt="logo">
+
+    </a>
+    Ragnorok Robotics 3748 Swerve
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Swerve
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Swerve
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Swerve Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Swerve Math
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Swerve Math
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-the-math-do" class="md-nav__link">
+    What does the math do?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes-on-units" class="md-nav__link">
+    Notes on Units
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-the-velocities-for-the-wheels" class="md-nav__link">
+    Getting the Velocities for the Wheels
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting the Velocities for the Wheels">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#translation" class="md-nav__link">
+    Translation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotation" class="md-nav__link">
+    Rotation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combining-rotation-and-translation" class="md-nav__link">
+    Combining Rotation and Translation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#field-oriented-control" class="md-nav__link">
+    Field Oriented Control
+  </a>
+  
+    <nav class="md-nav" aria-label="Field Oriented Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-use-field-oriented-control" class="md-nav__link">
+    Why use Field Oriented Control?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intuition-for-how-to-achieve-field-oriented-control" class="md-nav__link">
+    Intuition for how to Achieve Field-Oriented Control
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#math-for-field-oriented-control" class="md-nav__link">
+    Math for Field-Oriented Control
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drivetrainSubsystem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Drivetrain Subsystem
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging Workflow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auto/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Autonomous Workflow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-the-math-do" class="md-nav__link">
+    What does the math do?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes-on-units" class="md-nav__link">
+    Notes on Units
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-the-velocities-for-the-wheels" class="md-nav__link">
+    Getting the Velocities for the Wheels
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting the Velocities for the Wheels">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#translation" class="md-nav__link">
+    Translation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotation" class="md-nav__link">
+    Rotation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combining-rotation-and-translation" class="md-nav__link">
+    Combining Rotation and Translation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#field-oriented-control" class="md-nav__link">
+    Field Oriented Control
+  </a>
+  
+    <nav class="md-nav" aria-label="Field Oriented Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-use-field-oriented-control" class="md-nav__link">
+    Why use Field Oriented Control?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intuition-for-how-to-achieve-field-oriented-control" class="md-nav__link">
+    Intuition for how to Achieve Field-Oriented Control
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#math-for-field-oriented-control" class="md-nav__link">
+    Math for Field-Oriented Control
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="swerve-math">Swerve Math</h1>
+<h3 id="what-does-the-math-do">What does the math do?</h3>
+<p>The math for swerve is concerned with translating "robot actions" to "wheel actions." That is, if you want the robot to move at 3m/s forward while rotation at 0.5rad/s, then the job of the math is to figure out how to move each wheel on the drivetrain to achieve that motion.</p>
+<h3 id="notes-on-units">Notes on Units</h3>
+<p>We will be using degrees, since they're the most intuitive. Angles will be measures as on the unit circle. If you are confused look up what the unit circle is. Also, the x-axis will be forward, so whenever I say the robot will drive forward, I mean that it will drive in the x-positive direction.</p>
+<h2 id="getting-the-velocities-for-the-wheels">Getting the Velocities for the Wheels</h2>
+<h3 id="translation">Translation</h3>
+<p>Let's say for example that you want the robot to only move forward. That's pretty simple, you just make it point all the wheels forward and spin them forward. Now what if you want to move the robot at a 45 degree angle? That's also fairly easy: just point all the wheel to 45 degrees and spin the wheels forward. So, translation(moving the robot without rotating) is pretty simple for swerve: given a target angle and speed, the angle of each wheel should equal the target angle, and the wheels should spin at the target speed.</p>
+<p><img alt="Diagram of Tranlation of Swerve Drive" src="../images/swerveTranslationDiagram.png" /></p>
+<p>Therefore, if given a target velocity vector <span class="arithmatex">\(v\)</span>, the velocities for each wheel will be given by the following equation:
+$$
+v_i = v
+$$
+Pretty Simple. 
+(Note: If you don't know what a velocity vector is, look at some of the videos <a href="https://www.khanacademy.org/science/ap-college-physics-1/xf557a762645cccc5:kinematics-and-introduction-to-dynamics">here</a>)</p>
+<h3 id="rotation">Rotation</h3>
+<p>What if you want the drivetrain to rotate at a certain speed clockwise/counter-clockwise? To think about this, we will draw an imaginary circle that the wheels lie on in the chassis, as shown below:</p>
+<p><img alt="Swerve Diagram" src="../images/swerveDiagram.png" /></p>
+<p>To rotate the robot, the wheels just need to point tangent to this circle and spin, as shown:</p>
+<p><img alt="Diagram of wheel rotations" src="../images/swerveMathWheelRotation.png" /></p>
+<p>But how do you control the speed at which the robot spins? Well, to answer this, we need to translate the target rotational velocity to a linear velocity (since the speed of each wheel at the edge of the circle is the linear speed). Spinning the wheels at this speed should rotate the robot at the target rotational velocity. The equation to translate the velocities is as follows:
+$$
+v_i = \omega R
+$$</p>
+<ul>
+<li><span class="arithmatex">\(\omega\)</span> is the target rotational velocity</li>
+<li><span class="arithmatex">\(R\)</span> is the distance of the wheels from the center of the chassis</li>
+<li><span class="arithmatex">\(v_i\)</span> is the velocity of each wheel</li>
+</ul>
+<p>However, there is a problem with this: it only takes into account one dimension; <span class="arithmatex">\(R\)</span> is just one number, so if you have an irregularly shaped chassis, the equation won't work. The bigger problem is that later, when we try to combine rotational and translational motion, we will need the output of the equation to be a vector for each wheel, however, this only returns a scalar(a number that doesn't indicate direction). So instead, we will use this equation
+$$
+v_i = \omega \times R_i
+$$</p>
+<p>It's a very subtle change, but <span class="arithmatex">\(v_i\)</span> will be the cross product of <span class="arithmatex">\(\omega\)</span> and <span class="arithmatex">\(R_i\)</span> where both <span class="arithmatex">\(\omega\)</span> and <span class="arithmatex">\(R_i\)</span> can be vectors. This keeps the output, <span class="arithmatex">\(v_i\)</span>, as a vector. Also note that instead of <span class="arithmatex">\(R\)</span>, we will be using <span class="arithmatex">\(R_i\)</span>, which will represent the coordinates of each wheel relative to the robot's center. So if one of the wheels is 0.75m to the right and 0.5m up from the center of the robot, <span class="arithmatex">\(R_i\)</span> will be <span class="arithmatex">\(\begin{bmatrix} 0.75 \\ 0.5 \end{bmatrix}\)</span>.</p>
+<h3 id="combining-rotation-and-translation">Combining Rotation and Translation</h3>
+<p>In a competition, you won't just be doing rotation or translation, you'll be doing a combination of both. So we will need an equation that gives the velocity for each wheel given a target velocity for translation and a target rotational velocity. It turns out this is pretty simple: we just combine the two equations from the previous sections:
+$$
+v_i = v + \omega \times R_i
+$$</p>
+<p>This formula is the core of the drivetrain. Just to review, here is what all the symbols mean:</p>
+<ul>
+<li><span class="arithmatex">\(v_i\)</span> is the velocity of the <span class="arithmatex">\(i\)</span>th wheel.</li>
+<li><span class="arithmatex">\(v\)</span> is the target translational velocity for the robot.</li>
+<li><span class="arithmatex">\(\omega\)</span> is the rotational velocity for the robot.</li>
+<li><span class="arithmatex">\(R_i\)</span> is the distance from the center of the robot to the <span class="arithmatex">\(i\)</span>th wheel.</li>
+</ul>
+<p>All of this might be confusing if you have never been exposed to kinematics, so take a moment to make sure you understand everything and ask questions in the discord if you have them.</p>
+<p>Note that <span class="arithmatex">\(v_i\)</span> is going to be a 2D vector that indicates the velocity of the <span class="arithmatex">\(i\)</span>th wheel, but it is going to be helpful to split the equation for <span class="arithmatex">\(v_i\)</span> so that we have two equations that output scalars(we need to isolate x and y components.</p>
+<p><img alt="Drawing of vi components" src="../images/viComponents.png" /></p>
+<p>So the equations for the x and y components will be as follows(look at <a href="https://www.mathsisfun.com/algebra/vectors-cross-product.html">this page</a> for how these could be derived):
+$$
+\begin{align}
+v_{ix} = v_x - \omega R_{iy} \
+v_{iy} = v_y + \omega R_{ix}
+\end{align}
+$$</p>
+<p><span class="arithmatex">\(\omega\)</span> is the target rotational speed. Here is a diagram that illustrates what all the other symbols are:
+![[swerveMath 2023-10-21 19.15.40.excalidraw]]</p>
+<h2 id="field-oriented-control">Field Oriented Control</h2>
+<h3 id="why-use-field-oriented-control">Why use Field Oriented Control?</h3>
+<p>When controlling a swerve drivetrain, it is very helpful to dissociate the turning with the translation motion. However, this means that the driver would need to constantly adjust for how the robot is turned. So, if the robot is turned 180 degrees, the driver would need to go "back" to drive forward. This is very hard to do during a competition, so it is better to have the robot use field-oriented control, where a command to drive "forward" will always move the robot away from the driver.</p>
+<h3 id="intuition-for-how-to-achieve-field-oriented-control">Intuition for how to Achieve Field-Oriented Control</h3>
+<p>Let's imagine the driver inputs as vectors. So, if the driver wants the robot to move forward, the input vector for that might look like <span class="arithmatex">\(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\)</span>(remember the x-axis is forward). So, for the robot to always move relative to the field, the vector needs to be rotated opposite to the robot's rotation on the field. So, if the robot is rotated 90 degrees relative to the field(facing the left wall), the input vector needs to be rotated -90 degrees, so the forward input vector from before would now be <span class="arithmatex">\(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\)</span>.</p>
+<h3 id="math-for-field-oriented-control">Math for Field-Oriented Control</h3>
+<p>We need two things to achieve field oriented control: an input(which the driver gives through the controller), and the robot rotation relative to the field(which we get from the gyro). The input vector can be constructed </p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
