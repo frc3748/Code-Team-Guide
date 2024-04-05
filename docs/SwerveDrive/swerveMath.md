@@ -63,25 +63,80 @@ Note that $v_i$ is going to be a 2D vector that indicates the velocity of the $i
 
 So the equations for the x and y components will be as follows(look at [this page](https://www.mathsisfun.com/algebra/vectors-cross-product.html) for how these could be derived):
 $$
-\begin{align}
-v_{ix} = v_x - \omega R_{iy} \\
+\displaylines{
+v_{ix} = v_x - \omega R_{iy} \newline
 v_{iy} = v_y + \omega R_{ix}
-\end{align}
+}
 $$
 
 $\omega$ is the target rotational speed. Here is a diagram that illustrates what all the other symbols are:
-![[swerveMath 2023-10-21 19.15.40.excalidraw]]
+![omega_drawing](images/omegaDrawing.png)
 ## Field Oriented Control
 
 ### Why use Field Oriented Control?
 
 When controlling a swerve drivetrain, it is very helpful to dissociate the turning with the translation motion. However, this means that the driver would need to constantly adjust for how the robot is turned. So, if the robot is turned 180 degrees, the driver would need to go "back" to drive forward. This is very hard to do during a competition, so it is better to have the robot use field-oriented control, where a command to drive "forward" will always move the robot away from the driver.
 
-### Intuition for how to Achieve Field-Oriented Control
-
-Let's imagine the driver inputs as vectors. So, if the driver wants the robot to move forward, the input vector for that might look like $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$(remember the x-axis is forward). So, for the robot to always move relative to the field, the vector needs to be rotated opposite to the robot's rotation on the field. So, if the robot is rotated 90 degrees relative to the field(facing the left wall), the input vector needs to be rotated -90 degrees, so the forward input vector from before would now be $\begin{bmatrix} 0 \\ 1 \end{bmatrix}$.
-
 ### Math for Field-Oriented Control
 
-We need two things to achieve field oriented control: an input(which the driver gives through the controller), and the robot rotation relative to the field(which we get from the gyro). The input vector can be constructed 
+We need two things to achieve field oriented control: an input($\vec{v}$; the driver gives through the controller), and the robot rotation relative to the field($\theta$ ; we get this from the gyro). The input vector can be represented as so:
+$$
+\vec{v} = \begin{bmatrix}
+v_x \newline
+v_y
+\end{bmatrix}
+$$
+where:
 
+- $\vec{v}$ is the target velocity vector of the robot
+- $v_x$ is the field oriented $x$-velocity of the robot
+- $v_y$ is the field oriented y-velocity of the robot
+
+In order for the robot to always move relative to the field rather than itself, we need to rotate the field commands by the inverse of the robot rotation. For instance, if the driver wants the robot to move forward, the input vector for that might look like $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$(remember the x-axis is forward). So, for the robot to always move relative to the field, the vector needs to be rotated opposite to the robot's rotation on the field. So, if the robot is rotated 45 degrees relative to the field(towards the left wall), the input vector needs to be rotated -45 degrees, so the forward input vector from before would now be $\begin{bmatrix} .71 \\ .71 \end{bmatrix}$ (notice that the magnitude of the vector -- the speed -- doesn't change):
+
+![fieldToRobot.png](images/fieldToRobot.png)
+
+Therefore, for every field relative input that we get from the controller, we need to rotate it by the inverse of the robot rotation before feeding it through the kinematics to get the wheel velocities. This can be done with a rotation matrix. We have to multiply the field relative velocity vector $v$ with the rotation matrix to get the robot-relative velocity:
+
+$$
+\displaylines{
+A=\begin{bmatrix}
+cos(\theta) && -sin(\theta) \newline
+sin(\theta) && cos(\theta)
+\end{bmatrix} \hspace{1em}
+v_{r} = Av
+}
+$$
+where:
+
+- $A$ is the rotation matrix
+- $\theta$ is the robot angle relative to the field
+- $v_r$ is the field relative target velocity
+
+This math can be converted to scalar for so that it is easier to code:
+$$
+\displaylines{
+v_{rx} = v_xcos(\theta) - v_xsin(\theta) \newline
+v_{ry} = v_ysin(\theta) + v_ycos(\theta)
+}
+$$
+where:
+
+- $v_{rx}$ is the $x$-component of the robot relative target velocity
+- $v_{ry}$ is the $y$-component of the robot relative target velocity
+- $v_x$ is the $x$-component of the field relative target velocity
+- $v_y$ is the $y$-component of the field relative target velocity
+- $\theta$ is the robot angle relative to the field
+
+## Summary
+
+The inputs are first collected from the driver. These are essentially 3 numbers: the $x$ and $y$ components of the field-relative target velocity and the target rotational velocity $\omega$. The $x$ and $y$ components can be represent as a vector $\vec{v}$:
+$$
+\displaylines{
+\vec{v} = \begin{bmatrix} 
+v_x \newline 
+v_y
+\end{bmatrix}
+}
+$$
+This $\vec{v}$ is then translated to the robot-relative target velocity as described in [this section](#math-for-field-oriented-control). The robot relative velocity and the $\omega$ from the driver inputs can be fed through the kinematics described [here](#getting-the-velocities-for-the-wheels) to get the wheel velocities. Then PID controllers can be used to enforce these target velocities on each module.
