@@ -11,11 +11,9 @@
             "id": "84e62c3c0fec42c5",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "SwerveDrive/swerveMath.md",
-                "mode": "source",
-                "source": false
+                "file": "SwerveDrive/images/fieldToRobot.png"
               }
             }
           },
@@ -23,9 +21,11 @@
             "id": "a02c8e1a995bb6f8",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "Excalidraw/fieldToRobot.png"
+                "file": "SwerveDrive/swerveMath.md",
+                "mode": "source",
+                "source": false
               }
             }
           },
@@ -49,7 +49,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -177,32 +178,31 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "84e62c3c0fec42c5",
+  "active": "a02c8e1a995bb6f8",
   "lastOpenFiles": [
-    "Excalidraw/swerveMath 2023-10-21 19.15.40.excalidraw.md",
-    "Excalidraw/fieldToRobot.png",
-    "SwerveDrive/swerveMath.md",
     "SwerveDrive/images/fieldToRobot.png",
+    "SwerveDrive/images/fieldToRobot.png",
+    "SwerveDrive/swerveMath.md",
     "Excalidraw/Drawing 2024-04-05 10.20.40.excalidraw.md",
-    "SwerveDrive/images/omegaDrawing.png",
-    "Excalidraw/omegaDrawing.png",
-    "Excalidraw.md",
-    "Excalidraw/SwerveMath Rotation Wheel Angle.md",
-    "Excalidraw/swerveMath 2023-10-21 18.37.02.excalidraw.md",
     "Excalidraw/swerveMath 2023-10-20 15.12.48.excalidraw.md",
+    "Excalidraw/swerveMath 2023-10-21 18.37.02.excalidraw.md",
+    "Excalidraw/swerveMath 2023-10-21 19.15.40.excalidraw.md",
+    "SwerveDrive/images/viComponents.png",
+    "SwerveDrive/images/viComponents.png",
+    "Excalidraw/swerveTranslationDiagram.png",
+    "Excalidraw/swerveMathWheelRotation.png",
+    "Excalidraw/omegaDrawing.png",
+    "Excalidraw/swerveDiagram.png",
     "Excalidraw/swerveMath 2023-10-20 14.56.28.excalidraw.md",
     "Excalidraw/Pasted image 20240404232358.png",
+    "Excalidraw.md",
+    "Excalidraw/SwerveMath Rotation Wheel Angle.md",
     "javascripts/mathjax.js",
     "javascripts",
-    "logo.png",
     "index.md",
     "swerveMath.md",
-    "Excalidraw/viComponents.png",
     "Untitled.md",
-    "Excalidraw/swerveMathWheelRotation.png",
-    "Excalidraw/swerveTranslationDiagram.png",
     "Excalidraw/swerveTranslationDiagram.md",
-    "Excalidraw/swerveDiagram.png",
     "Excalidraw",
     "logging.md",
     "drivetrainSubsystem.md",

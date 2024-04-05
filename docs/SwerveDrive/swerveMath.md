@@ -2,7 +2,7 @@
 ### What does the math do?
 The math for swerve is concerned with translating "robot actions" to "wheel actions." That is, if you want the robot to move at 3m/s forward while rotation at 0.5rad/s, then the job of the math is to figure out how to move each wheel on the drivetrain to achieve that motion.
 ### Notes on Units
-We will be using degrees, since they're the most intuitive. Angles will be measures as on the unit circle. If you are confused look up what the unit circle is. Also, the x-axis will be forward, so whenever I say the robot will drive forward, I mean that it will drive in the x-positive direction.
+We will be using degrees, since they're the most intuitive. Angles will be measures as on the unit circle(counter-clockwise positive). Also, the x-axis will be forward, so whenever I say the robot will drive forward, I mean that it will drive in the x-positive direction.
 
 ## Getting the Velocities for the Wheels
 ### Translation
@@ -57,7 +57,7 @@ This formula is the core of the drivetrain. Just to review, here is what all the
 
 All of this might be confusing if you have never been exposed to kinematics, so take a moment to make sure you understand everything and ask questions in the discord if you have them.
 
-Note that $v_i$ is going to be a 2D vector that indicates the velocity of the $i$th wheel, but it is going to be helpful to split the equation for $v_i$ so that we have two equations that output scalars(we need to isolate x and y components.
+Note that $v_i$ is going to be a 2D vector that indicates the velocity of the $i$th wheel, but it is going to be helpful to split the equation for $v_i$ so that we have two equations that output scalars(we need to isolate x and y components).
 
 ![Drawing of vi components](images/viComponents.png)
 
@@ -68,8 +68,15 @@ v_{ix} = v_x - \omega R_{iy} \newline
 v_{iy} = v_y + \omega R_{ix}
 }
 $$
+where:
 
-$\omega$ is the target rotational speed. Here is a diagram that illustrates what all the other symbols are:
+- $\omega$ is the target rotational velocity. 
+- $v$ is the target translational velocity.
+- $v_i$ is the target velocity for the $i$th wheel.
+- $R_i$ is the distance vector from the center of the robot to the wheel.
+
+Here is a diagram that illustrates what all the other symbols are:
+
 ![omega_drawing](images/omegaDrawing.png)
 ## Field Oriented Control
 
