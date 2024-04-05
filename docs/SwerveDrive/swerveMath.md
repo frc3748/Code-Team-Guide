@@ -10,9 +10,9 @@ Let's say for example that you want the robot to only move forward. That's prett
 
 ![Diagram of Tranlation of Swerve Drive](images/swerveTranslationDiagram.png)
 
-Therefore, if given a target velocity vector $v$, the velocities for each wheel will be given by the following equation:
+Therefore, if given a target velocity vector $\vec{v}$, the velocities for each wheel will be given by the following equation:
 $$
-v_i = v
+\vec{v_i} = \vec{v}
 $$
 Pretty Simple. 
 (Note: If you don't know what a velocity vector is, look at some of the videos [here](https://www.khanacademy.org/science/ap-college-physics-1/xf557a762645cccc5:kinematics-and-introduction-to-dynamics))
@@ -37,23 +37,23 @@ $$
 
 However, there is a problem with this: it only takes into account one dimension; $R$ is just one number, so if you have an irregularly shaped chassis, the equation won't work. The bigger problem is that later, when we try to combine rotational and translational motion, we will need the output of the equation to be a vector for each wheel, however, this only returns a scalar(a number that doesn't indicate direction). So instead, we will use this equation
 $$
-v_i = \omega \times R_i
+\vec{v_i} = \vec{\omega} \times \vec{R_i}
 $$
 
-It's a very subtle change, but $v_i$ will be the cross product of $\omega$ and $R_i$ where both $\omega$ and $R_i$ can be vectors. This keeps the output, $v_i$, as a vector. Also note that instead of $R$, we will be using $R_i$, which will represent the coordinates of each wheel relative to the robot's center. So if one of the wheels is 0.75m to the right and 0.5m up from the center of the robot, $R_i$ will be $\begin{bmatrix} 0.75 \\ 0.5 \end{bmatrix}$.
+It's a very subtle change, but $\vec{v_i}$ will be the cross product of $\vec{\omega}$ and $\vec{R_i}$ where both $\vec{\omega}$ and $\vec{R_i}$ can be vectors. This keeps the output, $\vec{v_i}$, as a vector. Also note that instead of $R$, we will be using $\vec{R_i}$, which will represent the coordinates of each wheel relative to the robot's center. So if one of the wheels is 0.75m to the right and 0.5m up from the center of the robot, $R_i$ will be $\begin{bmatrix} 0.75 \\ 0.5 \end{bmatrix}$.
 ### Combining Rotation and Translation
 
 In a competition, you won't just be doing rotation or translation, you'll be doing a combination of both. So we will need an equation that gives the velocity for each wheel given a target velocity for translation and a target rotational velocity. It turns out this is pretty simple: we just combine the two equations from the previous sections:
 $$
-v_i = v + \omega \times R_i
+\vec{v_i} = \vec{v} + \vec{\omega} \times \vec{R_i}
 $$
 
 This formula is the core of the drivetrain. Just to review, here is what all the symbols mean:
 
-- $v_i$ is the velocity of the $i$th wheel.
-- $v$ is the target translational velocity for the robot.
-- $\omega$ is the rotational velocity for the robot.
-- $R_i$ is the distance from the center of the robot to the $i$th wheel.
+- $\vec{v_i}$ is the velocity of the $i$th wheel.
+- $\vec{v}$ is the target translational velocity for the robot.
+- $\vec{\omega}$ is the rotational velocity for the robot.
+- $\vec{R_i}$ is the distance from the center of the robot to the $i$th wheel.
 
 All of this might be confusing if you have never been exposed to kinematics, so take a moment to make sure you understand everything and ask questions in the discord if you have them.
 
@@ -82,7 +82,7 @@ Here is a diagram that illustrates what all the other symbols are:
 
 ### Why use Field Oriented Control?
 
-When controlling a swerve drivetrain, it is very helpful to dissociate the turning with the translation motion. However, this means that the driver would need to constantly adjust for how the robot is turned. So, if the robot is turned 180 degrees, the driver would need to go "back" to drive forward. This is very hard to do during a competition, so it is better to have the robot use field-oriented control, where a command to drive "forward" will always move the robot away from the driver.
+When controlling a swerve drivetrain, it is very helpful to dissociate the turning with the translation motion. However, this means that the driver would need to constantly adjust for how the robot is turned. So, if the robot is turned $180^\circ$, the driver would need to go "back" to drive forward. This is very hard to do during a competition, so it is better to have the robot use field-oriented control, where a command to drive "forward" will always move the robot away from the driver.
 
 ### Math for Field-Oriented Control
 
@@ -97,13 +97,13 @@ where:
 
 - $\vec{v}$ is the target velocity vector of the robot
 - $v_x$ is the field oriented $x$-velocity of the robot
-- $v_y$ is the field oriented y-velocity of the robot
+- $v_y$ is the field oriented $y$-velocity of the robot
 
-In order for the robot to always move relative to the field rather than itself, we need to rotate the field commands by the inverse of the robot rotation. For instance, if the driver wants the robot to move forward, the input vector for that might look like $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$(remember the x-axis is forward). So, for the robot to always move relative to the field, the vector needs to be rotated opposite to the robot's rotation on the field. So, if the robot is rotated 45 degrees relative to the field(towards the left wall), the input vector needs to be rotated -45 degrees, so the forward input vector from before would now be $\begin{bmatrix} .71 \\ .71 \end{bmatrix}$ (notice that the magnitude of the vector -- the speed -- doesn't change):
+In order for the robot to always move relative to the field rather than itself, we need to rotate the field commands by the inverse of the robot rotation. For instance, if the driver wants the robot to move forward, the input vector for that might look like $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$(remember the $x$-axis is forward). So, for the robot to always move relative to the field, the vector needs to be rotated opposite to the robot's rotation on the field. So, if the robot is rotated $45^\circ$ relative to the field(towards the left wall), the input vector needs to be rotated $-45^\circ$, so the forward input vector from before would now be $\begin{bmatrix} .71 \\ .71 \end{bmatrix}$ (notice that the magnitude of the vector -- the speed -- doesn't change):
 
 ![fieldToRobot.png](images/fieldToRobot.png)
 
-Therefore, for every field relative input that we get from the controller, we need to rotate it by the inverse of the robot rotation before feeding it through the kinematics to get the wheel velocities. This can be done with a rotation matrix. We have to multiply the field relative velocity vector $v$ with the rotation matrix to get the robot-relative velocity:
+Therefore, for every field relative input that we get from the controller, we need to rotate it by the inverse of the robot rotation before feeding it through the kinematics to get the wheel velocities. This can be done with a rotation matrix. We have to multiply the field relative velocity vector $\vec{v}$ with the rotation matrix to get the robot-relative velocity:
 
 $$
 \displaylines{
@@ -111,7 +111,7 @@ A=\begin{bmatrix}
 cos(\theta) && -sin(\theta) \newline
 sin(\theta) && cos(\theta)
 \end{bmatrix} \hspace{1em}
-v_{r} = Av
+\vec{v_{r}} = A\vec{v}
 }
 $$
 where:

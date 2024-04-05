@@ -111,7 +111,7 @@
 <h3 id="what-does-the-math-do">What does the math do?</h3>
 <p>The math for swerve is concerned with translating "robot actions" to "wheel actions." That is, if you want the robot to move at 3m/s forward while rotation at 0.5rad/s, then the job of the math is to figure out how to move each wheel on the drivetrain to achieve that motion.</p>
 <h3 id="notes-on-units">Notes on Units</h3>
-<p>We will be using degrees, since they're the most intuitive. Angles will be measures as on the unit circle. If you are confused look up what the unit circle is. Also, the x-axis will be forward, so whenever I say the robot will drive forward, I mean that it will drive in the x-positive direction.</p>
+<p>We will be using degrees, since they're the most intuitive. Angles will be measures as on the unit circle(counter-clockwise positive). Also, the x-axis will be forward, so whenever I say the robot will drive forward, I mean that it will drive in the x-positive direction.</p>
 <h2 id="getting-the-velocities-for-the-wheels">Getting the Velocities for the Wheels</h2>
 <h3 id="translation">Translation</h3>
 <p>Let's say for example that you want the robot to only move forward. That's pretty simple, you just make it point all the wheels forward and spin them forward. Now what if you want to move the robot at a 45 degree angle? That's also fairly easy: just point all the wheel to 45 degrees and spin the wheels forward. So, translation(moving the robot without rotating) is pretty simple for swerve: given a target angle and speed, the angle of each wheel should equal the target angle, and the wheels should spin at the target speed.</p>
@@ -154,7 +154,7 @@ $$</p>
 <li><span class="arithmatex">\(R_i\)</span> is the distance from the center of the robot to the <span class="arithmatex">\(i\)</span>th wheel.</li>
 </ul>
 <p>All of this might be confusing if you have never been exposed to kinematics, so take a moment to make sure you understand everything and ask questions in the discord if you have them.</p>
-<p>Note that <span class="arithmatex">\(v_i\)</span> is going to be a 2D vector that indicates the velocity of the <span class="arithmatex">\(i\)</span>th wheel, but it is going to be helpful to split the equation for <span class="arithmatex">\(v_i\)</span> so that we have two equations that output scalars(we need to isolate x and y components.</p>
+<p>Note that <span class="arithmatex">\(v_i\)</span> is going to be a 2D vector that indicates the velocity of the <span class="arithmatex">\(i\)</span>th wheel, but it is going to be helpful to split the equation for <span class="arithmatex">\(v_i\)</span> so that we have two equations that output scalars(we need to isolate x and y components).</p>
 <p><img alt="Drawing of vi components" src="../images/viComponents.png" /></p>
 <p>So the equations for the x and y components will be as follows(look at <a href="https://www.mathsisfun.com/algebra/vectors-cross-product.html">this page</a> for how these could be derived):
 $$
@@ -162,9 +162,16 @@ $$
 v_{ix} = v_x - \omega R_{iy} \newline
 v_{iy} = v_y + \omega R_{ix}
 }
-$$</p>
-<p><span class="arithmatex">\(\omega\)</span> is the target rotational speed. Here is a diagram that illustrates what all the other symbols are:
-<img alt="omega_drawing" src="../images/omegaDrawing.png" /></p>
+$$
+where:</p>
+<ul>
+<li><span class="arithmatex">\(\omega\)</span> is the target rotational velocity. </li>
+<li><span class="arithmatex">\(v\)</span> is the target translational velocity.</li>
+<li><span class="arithmatex">\(v_i\)</span> is the target velocity for the <span class="arithmatex">\(i\)</span>th wheel.</li>
+<li><span class="arithmatex">\(R_i\)</span> is the distance vector from the center of the robot to the wheel.</li>
+</ul>
+<p>Here is a diagram that illustrates what all the other symbols are:</p>
+<p><img alt="omega_drawing" src="../images/omegaDrawing.png" /></p>
 <h2 id="field-oriented-control">Field Oriented Control</h2>
 <h3 id="why-use-field-oriented-control">Why use Field Oriented Control?</h3>
 <p>When controlling a swerve drivetrain, it is very helpful to dissociate the turning with the translation motion. However, this means that the driver would need to constantly adjust for how the robot is turned. So, if the robot is turned 180 degrees, the driver would need to go "back" to drive forward. This is very hard to do during a competition, so it is better to have the robot use field-oriented control, where a command to drive "forward" will always move the robot away from the driver.</p>
