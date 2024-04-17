@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://www.example.com/SwerveDrive/drivetrainSubsystem/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://www.example.com/SwerveDrive/moduleSubsystem/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>The Drivetrain Subsystem - Ragnorok Robotics 3748 Swerve</title>
+    <title>The Module Subsystem - Ragnorok Robotics 3748 Swerve</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "The Drivetrain Subsystem";
-        var mkdocs_page_input_path = "SwerveDrive\\drivetrainSubsystem.md";
-        var mkdocs_page_url = "/SwerveDrive/drivetrainSubsystem/";
+        var mkdocs_page_name = "The Module Subsystem";
+        var mkdocs_page_input_path = "SwerveDrive\\moduleSubsystem.md";
+        var mkdocs_page_url = "/SwerveDrive/moduleSubsystem/";
       </script>
     
     <!--[if lt IE 9]>
@@ -52,9 +52,13 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging Workflow</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../moduleSubsystem/">The Module Subsystem</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">The Module Subsystem</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    </ul>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">The Drivetrain Subsystem</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../drivetrainSubsystem/">The Drivetrain Subsystem</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../auto/">Autonomous Workflow</a>
                   </li>
@@ -74,7 +78,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Swerve</li>
-      <li class="breadcrumb-item active">The Drivetrain Subsystem</li>
+      <li class="breadcrumb-item active">The Module Subsystem</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -83,13 +87,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                
+                <h1 id="the-swerve-modules">The Swerve Modules</h1>
+<h2 id="overview">Overview</h2>
+<p>This section will describe code involved in controlling the modules. This will be done through a module subsystem that is not concerned with robot-centric or field-centric control. It's sole purpose will be to take in input from higher-level classes regarding module angles and speeds and enforce those inputs as efficiently as possible. It will also have methods to get feedback information like the distance travelled by the modules, their speeds, angles, etc.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../moduleSubsystem/" class="btn btn-neutral float-left" title="The Module Subsystem"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../auto/" class="btn btn-neutral float-right" title="Autonomous Workflow">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../logging/" class="btn btn-neutral float-left" title="Logging Workflow"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../drivetrainSubsystem/" class="btn btn-neutral float-right" title="The Drivetrain Subsystem">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -112,10 +118,10 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../moduleSubsystem/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../logging/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../auto/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../drivetrainSubsystem/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

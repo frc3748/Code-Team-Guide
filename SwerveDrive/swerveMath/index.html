@@ -52,8 +52,6 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#what-does-the-math-do">What does the math do?</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#notes-on-units">Notes on Units</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#getting-the-velocities-for-the-wheels">Getting the Velocities for the Wheels</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#translation">Translation</a>
@@ -76,9 +74,11 @@
     </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../drivetrainSubsystem/">The Drivetrain Subsystem</a>
-                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging Workflow</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../moduleSubsystem/">The Module Subsystem</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../drivetrainSubsystem/">The Drivetrain Subsystem</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../auto/">Autonomous Workflow</a>
                   </li>
@@ -109,9 +109,11 @@
               
                 <h1 id="swerve-math">Swerve Math</h1>
 <h3 id="what-does-the-math-do">What does the math do?</h3>
-<p>The math for swerve is concerned with translating "robot actions" to "wheel actions." That is, if you want the robot to move at 3m/s forward while rotation at 0.5rad/s, then the job of the math is to figure out how to move each wheel on the drivetrain to achieve that motion.</p>
-<h3 id="notes-on-units">Notes on Units</h3>
+<p>The math for swerve is concerned with translating "robot actions" to "wheel actions." That is, if you want the robot to move at 3m/s forward while rotation at 0.5rad/s, then the job of the math is to figure out how to move each wheel on the drivetrain to achieve that motion. This section requires a basic understanding of vectors. Please look at <a href="https://www.mathsisfun.com/algebra/scalar-vector-matrix.html#:~:text=A%20scalar%20is%20a%20number,%2C%20one%20or%20more%20columns">this</a> website if you are new to this information.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>We will be using degrees, since they're the most intuitive. Angles will be measures as on the unit circle(counter-clockwise positive). Also, the x-axis will be forward, so whenever I say the robot will drive forward, I mean that it will drive in the x-positive direction.</p>
+</div>
 <h2 id="getting-the-velocities-for-the-wheels">Getting the Velocities for the Wheels</h2>
 <h3 id="translation">Translation</h3>
 <p>Let's say for example that you want the robot to only move forward. That's pretty simple, you just make it point all the wheels forward and spin them forward. Now what if you want to move the robot at a 45 degree angle? That's also fairly easy: just point all the wheel to 45 degrees and spin the wheels forward. So, translation(moving the robot without rotating) is pretty simple for swerve: given a target angle and speed, the angle of each wheel should equal the target angle, and the wheels should spin at the target speed.</p>
@@ -205,7 +207,7 @@ where:</p>
 <ul>
 <li><span class="arithmatex">\(A\)</span> is the rotation matrix</li>
 <li><span class="arithmatex">\(\theta\)</span> is the robot angle relative to the field</li>
-<li><span class="arithmatex">\(v_r\)</span> is the field relative target velocity</li>
+<li><span class="arithmatex">\(v_r\)</span> is the robot relative target velocity</li>
 </ul>
 <p>This math can be converted to scalar for so that it is easier to code:
 $$
@@ -238,7 +240,7 @@ This <span class="arithmatex">\(\vec{v}\)</span> is then translated to the robot
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../" class="btn btn-neutral float-left" title="Swerve Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../drivetrainSubsystem/" class="btn btn-neutral float-right" title="The Drivetrain Subsystem">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../logging/" class="btn btn-neutral float-right" title="Logging Workflow">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -264,7 +266,7 @@ This <span class="arithmatex">\(\vec{v}\)</span> is then translated to the robot
       <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../drivetrainSubsystem/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../logging/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

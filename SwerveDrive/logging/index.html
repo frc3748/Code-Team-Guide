@@ -50,9 +50,25 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../swerveMath/">Swerve Math</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../drivetrainSubsystem/">The Drivetrain Subsystem</a>
-                  </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Logging Workflow</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-approach-to-logging">The Approach to Logging</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#implementing-advantage-kit">Implementing Advantage Kit</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#some-final-notes-on-using-advantage-kit">Some Final Notes on Using Advantage Kit</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../moduleSubsystem/">The Module Subsystem</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../drivetrainSubsystem/">The Drivetrain Subsystem</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../auto/">Autonomous Workflow</a>
                   </li>
@@ -81,13 +97,144 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                
+                <h1 id="logging-workflow">Logging Workflow</h1>
+<h2 id="overview">Overview</h2>
+<p>This section will describe how <a href="https://github.com/Mechanical-Advantage/AdvantageKit">Advantage Kit</a> is integrated with the swerve code. The general approach will be to have an intermediate states class for each subsystem. This class will store the states of the subsystem(like the drive speed for the module subsystem). At each call of the periodic function, the Advantage Kit Logger will take an instance of the states class to automatically log values from it. For a more detailed explanation, look at the <a href="https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/README.md">Advantage Kit Documentation</a>. These pages might be especially helpful:</p>
+<ul>
+<li><a href="https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/DATA-FLOW.md">Data Flow</a></li>
+<li><a href="https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/RECORDING-INPUTS.md">Recording Inputs</a></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before reading this section, please make sure you have a strong understanding of object oriented programming, and the command-based programming paradigm. If you are new, please read the <a href="https://docs.wpilib.org/en/stable/docs/software/commandbased/index.html">WPI Documentation</a> for info on command-based programming.</p>
+</div>
+<h2 id="installation">Installation</h2>
+<p>Install the Advantage Kit library like any third party library by right clicking on <code>build.gradle</code> and clicking <code>Manage Vendor Libraries</code>. Once you click on online install, paste the following link to download the json file:</p>
+<pre><code>https://github.com/Mechanical-Advantage/AdvantageKit/releases/latest/download/AdvantageKit.json
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This link may be out of date. If you get a compilation error, go to the <a href="https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/INSTALLATION.md">documentation</a> for the latest link to the json file.</p>
+</div>
+<p>Now open the <code>build.gradle</code> file. Make sure the repositories block in the file looks like this:</p>
+<pre><code>repositories {
+
+    maven {
+        url = uri(&quot;https://maven.pkg.github.com/Mechanical-Advantage/AdvantageKit&quot;)
+        credentials {
+            username = &quot;Mechanical-Advantage-Bot&quot;
+            password = &quot;\u0067\u0068\u0070\u005f\u006e\u0056\u0051\u006a\u0055\u004f\u004c\u0061\u0079\u0066\u006e\u0078\u006e\u0037\u0051\u0049\u0054\u0042\u0032\u004c\u004a\u006d\u0055\u0070\u0073\u0031\u006d\u0037\u004c\u005a\u0030\u0076\u0062\u0070\u0063\u0051&quot;
+        }
+    }
+    mavenLocal()
+    mavenCentral()
+
+    }
+</code></pre>
+<p>If you do not see a repositories block, make one under the <code>includeDesktopSupport</code> line and format it as shown above.</p>
+<h2 id="setup">Setup</h2>
+<p>Most of the setup for Advantage Kit will take place in the Robot.java file. The first thing to do in Robot.java is to replace the parent class of the robot with <code>LoggedRobot</code> instead of <code>TimedRobot</code>. </p>
+<pre><code class="language-java">public class Robot extends LoggedRobot{
+...
+}
+</code></pre>
+<p>Then, the code here can be copy-pasted into Robot.java to finish the setup. It may change from year to year, but generally takes care of the boilerplate to initiate the logging system. If any errors are present, make sure to check the documentation linked above for changes. </p>
+<pre><code class="language-java">  @Override
+  public void robotInit() {
+    Logger.recordMetadata(&quot;ProjectName&quot;, &quot;MyProject&quot;); // Set a metadata value
+    if (isReal()) {
+        Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        new PowerDistribution(1, ModuleType.kAutomatic); // Enables power distribution logging
+    } else {
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+    }
+
+    // Logger.getInstance().disableDeterministicTimestamps() // See &quot;Deterministic Timestamps&quot; in the &quot;[Understanding Data Flow&quot; page
+    Logger.start();
+}
+</code></pre>
+<p>Make sure that classes like <code>Logger</code>, <code>NT4Publisher</code>, and <code>WPILOGWriter</code> are imported from <code>org.littletonrobotics</code> and not <code>com.ctre</code> or <code>java.util</code>. Look at the <a href="https://github.com/frc3748/2024-Robot-Code/blob/master/src/main/java/frc/robot/Robot.java">2024 Robot Code</a> for examples of import statements and how Advantage Kit might be integrated with the rest of the robot code. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Advantage Kit can be configured to omit logs from the Network Tables or the USB stick. To do this, comment out the appropriate <code>Logger.addDataReceiver()</code> lines.</p>
+</div>
+<h2 id="the-approach-to-logging">The Approach to Logging</h2>
+<p>The way Advantage Kit differs to traditional logging methods is that with this library, all values that could be useful get logged. Instead of putting certain values to the network tables and having all of the logs as one list that gets deleted upon reboot, Advantage Kit enables organization of logged values by Subsystem and saves logs to a USB stick. For more details, read <a href="https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/WHAT-IS-ADVANTAGEKIT.md">this</a> page.</p>
+<p>In order to organize logged values by subsystem, subsystem that is going to be logged will have a<code>states</code> attribute that stores the current states of the subsystem. For instance, for a drivetrain subsystem, the <code>states</code> object could store the current chassis speed, or the angle of the chassis with respect to the field. Every time the <code>periodic()</code> function is called, an <code>updateStates()</code> function will be called that reads the newest values from all the sensors and stores them in the <code>states</code> object. This object will then be passed to Advantage Kits <code>Logger</code> class so that the values can be stored on a USB and/or logged to Smart Dashboard.</p>
+<h2 id="implementing-advantage-kit">Implementing Advantage Kit</h2>
+<p>Each subsystem that is going to be logged is going to have a corresponding interface that defines which values are going to be logged through a subsystem. It will also contain an interface method that is going to be updating those values(usually called <code>updateStates()</code> as described <a href="#the-approach-to-logging">above</a>).  This class defined in the interface will  be decorated with the <code>@AutoLog</code> decorator which tells the Advantage Kit Logger to use the variable names in the class as the titles for the logged values(you don't need to worry too much about how this is done).</p>
+<p>The subsystems in the <a href="https://github.com/frc3748/2024-Robot-Code/tree/master/src/main/java/frc/robot/Subsystems">2024 Robot Code</a> have several examples of this. Shown below is the interface paired with the drivetrain subsystem.</p>
+<pre><code class="language-java">public interface IDriveIO {
+
+    @AutoLog
+    public class DriveStates{
+        double gyroAngleDeg;
+        double[] odomPoses = {0,0,0};
+        double[] chassisSpeeds = {0,0,0};
+        double[] targetSpeeds = {0,0,0};
+        double[] targetAutoSpeeds = {0, 0, 0};
+        boolean recievedNewControls;
+    }
+
+    public void updateDriveStates(DriveStatesAutoLogged states);
+    /* 
+    The body of this method will be defined in 
+    the drivetrain subsystem. It will update the 
+    values in the states parameter.
+    */
+}
+</code></pre>
+<p>Notice the class that is decorated with <code>@AutoLog</code> and the <code>updateDriveStates</code> method. Pay careful attention to how the <code>updateDriveStates</code> method takes in <code>DriveStatesAutoLogged</code> and not the <code>DriveStates</code> class. The <code>DriveStatesAutoLogged</code> class is automatically generated by Advantage Kit because the <code>DriveStates</code> class was decorated with the <code>@AutoLog</code> decorator. If you have errors when trying to get the <code>AutoLogged</code> classes, try refreshing the java workspace in VS Code or reopening the editor.</p>
+<p>The drivetrain subsystem will implement this interface (along with any other interfaces necessary for the subsystem):</p>
+<pre><code class="language-java">public class Drive implements IDriveIO, Subsystem, Sendable{
+    DriveStatesAutoLogged states =  new DriveStatesAutoLogged();
+    ...
+}
+</code></pre>
+<p>Also notice that the subsystem has an instance of the <code>DriveStatesAutoLogged</code> class as described <a href="#the-approach-to-logging">above</a>.</p>
+<p>The drivetrain subsystem will also define the <code>updateDriveStates</code> method that is required by the <code>IDriveIO</code> interface:</p>
+<pre><code class="language-java">    @Override
+    public void updateDriveStates(DriveStatesAutoLogged states){
+        states.gyroAngleDeg = gyro.getAngle().getDegrees();
+        ChassisSpeeds speeds = getChassisSpeeds();
+        states.chassisSpeeds[0] = speeds.vxMetersPerSecond;
+        states.chassisSpeeds[1] = speeds.vyMetersPerSecond;
+        states.chassisSpeeds[2] = speeds.omegaRadiansPerSecond;
+        double[] _odomPose = {
+            poseEstimator.getEstimatedPosition().getX(),
+            poseEstimator.getEstimatedPosition().getY(),
+            poseEstimator.getEstimatedPosition().getRotation().getDegrees()
+        };
+        states.odomPoses = _odomPose;
+        states.recievedNewControls = DriverStation.isNewControlData();
+    }
+</code></pre>
+<p>Again, this is where all the newest values from the sensors are updated on the states object. This method is called repeatedly in the periodic() method of the subsystem and the updated states are passed to the logger through the <code>Logger.processInputs()</code> method:</p>
+<pre><code class="language-java">    @Override
+    public void periodic(){
+        updateDriveStates(states);
+        Logger.processInputs(&quot;DriveTrain&quot;, states);
+        ...
+    }
+</code></pre>
+<h2 id="some-final-notes-on-using-advantage-kit">Some Final Notes on Using Advantage Kit</h2>
+<p>Advantage Kit aims to log every useful sensor value on the robot. As such, any useful values will theoretically be stored in the states object. Since the states object is repeatedly updated with the latest sensor values, it would be redundant to get the values from the sensor again in other parts of the code. So, ideally, all other parts of the code that need sensor values will get it from the states object. Here is an example:</p>
+<pre><code class="language-java">@Override
+public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty(&quot;Angle&quot;, () -&gt; states.odomPoses[2], null);
+    builder.addDoubleProperty(&quot;PoseX&quot;, () -&gt; states.odomPoses[0], null);
+    builder.addDoubleProperty(&quot;PoseY&quot;, () -&gt; states.odomPoses[1], null);
+}
+</code></pre>
+<p>Notice that instead of calling <code>poseEstimator.getEstimatedPosition()</code> to get the odometry values, this block uses the states object. This is valid because during each <code>periodic()</code> call, the <code>updateDriveStates()</code> method fills the <code>states</code> object with the latest odometry values.</p>
+<p>Using the <code>states</code> object frees up the CAN bus because you avoid duplicate calls to the sensors for data. Therefore, the ideal way to use Advantage Kit would be to log every useful sensor value and then use the states object in any other place where sensor data is necessary. This is not a requirement, but it is a <strong>highly recommended</strong> optimization that can be implemented if CAN usage ends up being an issue.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../drivetrainSubsystem/" class="btn btn-neutral float-left" title="The Drivetrain Subsystem"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../auto/" class="btn btn-neutral float-right" title="Autonomous Workflow">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../swerveMath/" class="btn btn-neutral float-left" title="Swerve Math"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../moduleSubsystem/" class="btn btn-neutral float-right" title="The Module Subsystem">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -110,10 +257,10 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../drivetrainSubsystem/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../swerveMath/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../auto/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../moduleSubsystem/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
