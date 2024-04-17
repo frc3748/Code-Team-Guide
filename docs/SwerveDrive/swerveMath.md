@@ -1,8 +1,9 @@
 # Swerve Math
 ### What does the math do?
-The math for swerve is concerned with translating "robot actions" to "wheel actions." That is, if you want the robot to move at 3m/s forward while rotation at 0.5rad/s, then the job of the math is to figure out how to move each wheel on the drivetrain to achieve that motion.
-### Notes on Units
-We will be using degrees, since they're the most intuitive. Angles will be measures as on the unit circle(counter-clockwise positive). Also, the x-axis will be forward, so whenever I say the robot will drive forward, I mean that it will drive in the x-positive direction.
+The math for swerve is concerned with translating "robot actions" to "wheel actions." That is, if you want the robot to move at 3m/s forward while rotation at 0.5rad/s, then the job of the math is to figure out how to move each wheel on the drivetrain to achieve that motion. This section requires a basic understanding of vectors. Please look at [this](https://www.mathsisfun.com/algebra/scalar-vector-matrix.html#:~:text=A%20scalar%20is%20a%20number,%2C%20one%20or%20more%20columns) website if you are new to this information.
+
+!!! note
+	We will be using degrees, since they're the most intuitive. Angles will be measures as on the unit circle(counter-clockwise positive). Also, the x-axis will be forward, so whenever I say the robot will drive forward, I mean that it will drive in the x-positive direction.
 
 ## Getting the Velocities for the Wheels
 ### Translation
@@ -118,7 +119,7 @@ where:
 
 - $A$ is the rotation matrix
 - $\theta$ is the robot angle relative to the field
-- $v_r$ is the field relative target velocity
+- $v_r$ is the robot relative target velocity
 
 This math can be converted to scalar for so that it is easier to code:
 $$

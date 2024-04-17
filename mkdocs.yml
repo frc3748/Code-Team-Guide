@@ -12,11 +12,13 @@ nav:
   - Swerve:
       - Swerve Overview: SwerveDrive/index.md
       - Swerve Math: SwerveDrive/swerveMath.md
-      - The Drivetrain Subsystem: SwerveDrive/drivetrainSubsystem.md
       - Logging Workflow: SwerveDrive/logging.md
+      - The Module Subsystem: SwerveDrive/moduleSubsystem.md
+      - The Drivetrain Subsystem: SwerveDrive/drivetrainSubsystem.md
       - Autonomous Workflow: SwerveDrive/auto.md
 
 markdown_extensions:
+  - admonition
   - pymdownx.arithmatex:
       generic: true
 
